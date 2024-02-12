@@ -5,27 +5,21 @@ import {
     CreateTableCommand,
     DeleteTableCommand,
     DynamoDBClient,
-    PutItemCommand
 } from "@aws-sdk/client-dynamodb";
-import { fromEnv } from "@aws-sdk/credential-provider-env";
+// import { fromEnv } from "@aws-sdk/credential-provider-env";
+import serverless from "serverless-http";
 
 
 // Create the DynamoDB service object
 const dynamodb = new DynamoDBClient({
-    credentials: fromEnv(),
+    // credentials: fromEnv(),
     region: "us-east-1"
 });
 const app = express();
-const port = 8080;
+// const port = 8080;
 
 // Use body-parser middleware to parse incoming request bodies
 app.use(bodyParser.json());
-
-// GET endpoint to retrieve the graph
-app.get('/', (_, res) => {
-    console.log("graph: ", storedValue);
-    res.json(storedValue);
-});
 
 // POST endpoint to take graph and store it in DynamoDB
 app.post('/', async (req, res) => {
@@ -51,16 +45,6 @@ app.post('/', async (req, res) => {
         vertices.add(start);
         vertices.add(end);
     });
-    // fill in the missing vertices and edges with -1
-    // vertices.forEach(vertex => {
-    //     vertices.forEach(otherVertex => {
-    //         if (!graphParsed[vertex][otherVertex] && vertex !== otherVertex) {
-    //             graphParsed[vertex][otherVertex] = -1;
-    //         }
-    //     });
-    // });
-
-    // console.log("graphParsed: ", graphParsed)
 
     // Compute the shortest path between all pairs of vertices using Breadth First Search
     const result = calculateShortestDistances(graphParsed, vertices);
@@ -76,9 +60,9 @@ app.post('/', async (req, res) => {
 });
 
 // Start the server
-app.listen(port, () => {
-    console.log(`Server is running at http://0.0.0.0:${port}`);
-});
+// app.listen(port, () => {
+//     console.log(`Server is running at http://0.0.0.0:${port}`);
+// });
 
 // Function to store the graph in DynamoDB table
 async function storeGraphInDynamoDB(graph) {
@@ -265,3 +249,6 @@ class PriorityQueue {
         return this.elements.length === 0;
     }
 }
+
+
+module.exports.handler = serverless(app);
