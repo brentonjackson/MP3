@@ -2,7 +2,7 @@
   "name": "mp3",
   "version": "1.0.0",
   "description": "Code for UIUC CS 498 - Cloud Computing Applications MP3",
-  "main": "graph_server.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

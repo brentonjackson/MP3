@@ -21,6 +21,11 @@ const app = express();
 // Use body-parser middleware to parse incoming request bodies
 app.use(bodyParser.json());
 
+// GET endpoint to retrieve the graph from DynamoDB
+app.get('/', async (req, res) => {
+    res.json({ message: 'Hello from the graph server!' });
+});
+
 // POST endpoint to take graph and store it in DynamoDB
 app.post('/', async (req, res) => {
     const { graph } = req.body;
@@ -250,5 +255,5 @@ class PriorityQueue {
     }
 }
 
-
-module.exports.handler = serverless(app);
+const handlerExport = serverless(app);
+export { handlerExport as handler };
